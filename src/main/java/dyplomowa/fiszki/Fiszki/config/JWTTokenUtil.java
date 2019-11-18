@@ -1,6 +1,6 @@
 package dyplomowa.fiszki.Fiszki.config;
 
-import dyplomowa.fiszki.Fiszki.model.User;
+import dyplomowa.fiszki.Fiszki.model.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

@@ -1,9 +1,9 @@
 package dyplomowa.fiszki.Fiszki.service.impl;
 
 import dyplomowa.fiszki.Fiszki.dao.FlashcardDAO;
-import dyplomowa.fiszki.Fiszki.model.Flashcard;
-import dyplomowa.fiszki.Fiszki.model.FlashcardDTO;
-import dyplomowa.fiszki.Fiszki.model.User;
+import dyplomowa.fiszki.Fiszki.model.entity.Flashcard;
+import dyplomowa.fiszki.Fiszki.model.dto.FlashcardDTO;
+import dyplomowa.fiszki.Fiszki.model.entity.User;
 import dyplomowa.fiszki.Fiszki.service.FlashcardService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

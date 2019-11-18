@@ -1,6 +1,7 @@
-package dyplomowa.fiszki.Fiszki.model;
+package dyplomowa.fiszki.Fiszki.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dyplomowa.fiszki.Fiszki.model.entity.Flashcard;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -22,7 +23,7 @@ public class User {
     private String role;
 
     @OneToMany(mappedBy = "user")
-    private Set<Flashcard> flashcardSet;
+    private Set<Flashcard> flashcards;
 
     public long getId() {
         return id;
@@ -63,5 +64,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Set<Flashcard> getFlashcards() {
+        return flashcards;
+    }
+
+    public void setFlashcards(Set<Flashcard> flashcards) {
+        this.flashcards = flashcards;
     }
 }

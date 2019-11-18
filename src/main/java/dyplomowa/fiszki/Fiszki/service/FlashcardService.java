@@ -1,8 +1,8 @@
 package dyplomowa.fiszki.Fiszki.service;
 
-import dyplomowa.fiszki.Fiszki.model.Flashcard;
-import dyplomowa.fiszki.Fiszki.model.FlashcardDTO;
-import dyplomowa.fiszki.Fiszki.model.User;
+import dyplomowa.fiszki.Fiszki.model.entity.Flashcard;
+import dyplomowa.fiszki.Fiszki.model.dto.FlashcardDTO;
+import dyplomowa.fiszki.Fiszki.model.entity.User;
 
 import java.util.List;
 

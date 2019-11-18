@@ -1,34 +1,18 @@
-package dyplomowa.fiszki.Fiszki.model;
+package dyplomowa.fiszki.Fiszki.model.dto;
 
-import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "flashcard")
-public class Flashcard {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class FlashcardDTO {
+
+    //TODO może refactor, bo to nie jest bardzo potrzebna warstwa - czy przesyłanie użytkownika to tak duży problem
+
     private long id;
-
-    @ManyToOne
-    @JoinColumn(name = "id_user", nullable = false)
-    private User user;
-
-    @Column(name = "front_text")
     private String frontText;
-    @Column(name = "back_text")
     private String backText;
-    @Column(name = "extra_text")
     private String extraText;
-
-    @ElementCollection
-    @CollectionTable(name = "tag", joinColumns = @JoinColumn(name = "id_flashcard"))
-    @Column(name = "tag")
-    private Set<String> tags = new HashSet<>();
-
-    public Flashcard() {
-    }
+    private Set<String> tags;
+    //Nie przesyłać w jsonie całego użytkownika, tylko jego id?
+    private long userId;
 
     public long getId() {
         return id;
@@ -70,11 +54,11 @@ public class Flashcard {
         this.tags = tags;
     }
 
-    public User getUser() {
-        return user;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }

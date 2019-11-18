@@ -1,8 +1,8 @@
 package dyplomowa.fiszki.Fiszki.service.impl;
 
 import dyplomowa.fiszki.Fiszki.dao.UserDAO;
-import dyplomowa.fiszki.Fiszki.model.User;
-import dyplomowa.fiszki.Fiszki.model.UserDto;
+import dyplomowa.fiszki.Fiszki.model.entity.User;
+import dyplomowa.fiszki.Fiszki.model.dto.UserDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

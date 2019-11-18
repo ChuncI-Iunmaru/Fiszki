@@ -1,8 +1,8 @@
 package dyplomowa.fiszki.Fiszki.controller;
 
 import dyplomowa.fiszki.Fiszki.model.ApiResponse;
-import dyplomowa.fiszki.Fiszki.model.User;
-import dyplomowa.fiszki.Fiszki.model.UserDto;
+import dyplomowa.fiszki.Fiszki.model.entity.User;
+import dyplomowa.fiszki.Fiszki.model.dto.UserDto;
 import dyplomowa.fiszki.Fiszki.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

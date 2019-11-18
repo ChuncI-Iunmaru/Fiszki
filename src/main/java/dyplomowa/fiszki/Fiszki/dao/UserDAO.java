@@ -1,6 +1,6 @@
 package dyplomowa.fiszki.Fiszki.dao;
 
-import dyplomowa.fiszki.Fiszki.model.User;
+import dyplomowa.fiszki.Fiszki.model.entity.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

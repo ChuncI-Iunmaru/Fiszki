@@ -2,6 +2,8 @@ package dyplomowa.fiszki.Fiszki.controller;
 
 import dyplomowa.fiszki.Fiszki.config.JWTTokenUtil;
 import dyplomowa.fiszki.Fiszki.model.*;
+import dyplomowa.fiszki.Fiszki.model.dto.UserDto;
+import dyplomowa.fiszki.Fiszki.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

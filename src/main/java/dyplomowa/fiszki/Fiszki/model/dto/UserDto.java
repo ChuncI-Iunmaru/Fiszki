@@ -1,4 +1,4 @@
-package dyplomowa.fiszki.Fiszki.model;
+package dyplomowa.fiszki.Fiszki.model.dto;
 
 public class UserDto {
 

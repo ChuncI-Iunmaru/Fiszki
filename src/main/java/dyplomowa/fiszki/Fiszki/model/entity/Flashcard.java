@@ -1,16 +1,37 @@
-package dyplomowa.fiszki.Fiszki.model;
+package dyplomowa.fiszki.Fiszki.model.entity;
 
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
-public class FlashcardDTO {
-
+@Entity
+@Table(name = "flashcard")
+public class Flashcard {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @ManyToOne
+    @JoinColumn(name = "id_user", nullable = false)
+    private User user;
+
+    @Column(name = "front_text")
     private String frontText;
+    @Column(name = "back_text")
     private String backText;
+    @Column(name = "extra_text")
     private String extraText;
-    private Set<String> tags;
-    //Nie przesyłać w jsonie całego użytkownika, tylko jego id?
-    private long userId;
+
+    @ElementCollection
+    @CollectionTable(name = "tag", joinColumns = @JoinColumn(name = "id_flashcard"))
+    @Column(name = "tag")
+    private Set<String> tags = new HashSet<>();
+
+    @ManyToMany(mappedBy = "flashcards")
+    private Set<FlashcardSet> flashcardSets;
+
+    public Flashcard() {
+    }
 
     public long getId() {
         return id;
@@ -52,11 +73,11 @@ public class FlashcardDTO {
         this.tags = tags;
     }
 
-    public long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

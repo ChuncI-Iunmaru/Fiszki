@@ -1,7 +1,7 @@
 package dyplomowa.fiszki.Fiszki.service;
 
-import dyplomowa.fiszki.Fiszki.model.User;
-import dyplomowa.fiszki.Fiszki.model.UserDto;
+import dyplomowa.fiszki.Fiszki.model.entity.User;
+import dyplomowa.fiszki.Fiszki.model.dto.UserDto;
 
 import java.util.List;
 
