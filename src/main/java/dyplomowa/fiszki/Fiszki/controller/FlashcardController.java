@@ -8,6 +8,8 @@ import dyplomowa.fiszki.Fiszki.service.FlashcardService;
 import dyplomowa.fiszki.Fiszki.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -30,19 +32,23 @@ public class FlashcardController {
         return new ApiResponse<>(HttpStatus.OK.value(), "Flashcard saved successfully.",flashcardService.save(flashcard));
     }
 
-    //TODO Metody poniżej: Może to powinno brać usera z tokena?
-    @GetMapping("/user_{id}")
-    public ApiResponse<List<Flashcard>> getByUserId(@PathVariable long id){
-        User user = userService.findById(id);
-        if (user == null) return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "No user found with id " + id, Collections.emptyList());
-            else return new ApiResponse<>(HttpStatus.OK.value(), "Flashcards for user id " + id, flashcardService.findByUser(user));
+    //Bierze usera z tokena, ale statyczny call
+    @GetMapping("/user")
+    public ApiResponse<List<Flashcard>> getByTokenUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userService.findOne(username);
+        if (user == null) return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "No user found with username " + username + ", possible authorization error.", Collections.emptyList());
+            else return new ApiResponse<>(HttpStatus.OK.value(), "Flashcards for username = " + username, flashcardService.findByUser(user));
     }
 
-    @GetMapping("/user_{id}/tags_{tags}")
-    public ApiResponse<List<Flashcard>> getByUserIdAndTags(@PathVariable long id, @PathVariable List<String> tags){
-        User user = userService.findById(id);
-        if (user == null) return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "No user found with id " + id, Collections.emptyList());
-        else return new ApiResponse<>(HttpStatus.OK.value(), "Flashcards for user id " + id + " and tags { " + tags +" }", flashcardService.findByUserAndTags(user, tags));
+    @GetMapping("/tags_{tags}")
+    public ApiResponse<List<Flashcard>> getByUserIdAndTags(@PathVariable List<String> tags){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userService.findOne(username);
+        if (user == null) return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "No user found with username " + username + ", possible authorization error.", Collections.emptyList());
+        else return new ApiResponse<>(HttpStatus.OK.value(), "Flashcards for username = " + username + " and tags { " + tags +" }", flashcardService.findByUserAndTags(user, tags));
     }
 
     @GetMapping("/{id}")

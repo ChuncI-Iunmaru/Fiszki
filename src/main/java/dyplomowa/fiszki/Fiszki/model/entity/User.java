@@ -1,7 +1,6 @@
 package dyplomowa.fiszki.Fiszki.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import dyplomowa.fiszki.Fiszki.model.entity.Flashcard;
 
 import javax.persistence.*;
 import java.util.Set;

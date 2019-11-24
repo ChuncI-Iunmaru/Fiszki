@@ -1,5 +1,7 @@
 package dyplomowa.fiszki.Fiszki.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -39,10 +41,8 @@ public class FlashcardSet {
             inverseJoinColumns = {@JoinColumn(name = "id_flashcard", referencedColumnName = "id")})
     private Set<Flashcard> flashcards;
 
-    enum Accessiblity {
-        ALWAYS,
-        AFTER_COMPLETION
-    }
+    @Column(name = "password")
+    private String password;
 
     public FlashcardSet() {
     }
@@ -117,5 +117,14 @@ public class FlashcardSet {
 
     public void setFlashcards(Set<Flashcard> flashcards) {
         this.flashcards = flashcards;
+    }
+
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
