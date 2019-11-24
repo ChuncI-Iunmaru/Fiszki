@@ -1,12 +1,16 @@
 package dyplomowa.fiszki.Fiszki.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "user")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
 
     @Id
@@ -22,6 +26,7 @@ public class User {
     private String role;
 
     @OneToMany(mappedBy = "user")
+    @JsonIdentityReference
     private Set<Flashcard> flashcards;
 
     public long getId() {

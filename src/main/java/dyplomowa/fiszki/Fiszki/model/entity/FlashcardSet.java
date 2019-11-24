@@ -1,12 +1,16 @@
 package dyplomowa.fiszki.Fiszki.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "flashcard_set")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class FlashcardSet {
 
     @Id
@@ -15,6 +19,7 @@ public class FlashcardSet {
 
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = false)
+    @JsonIdentityReference
     private User creator;
 
     @Column(name = "title")
@@ -39,6 +44,7 @@ public class FlashcardSet {
     @JoinTable(name = "flashcard_to_flashcard_set",
             joinColumns = {@JoinColumn(name = "id_flashcard_set", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "id_flashcard", referencedColumnName = "id")})
+    @JsonIdentityReference
     private Set<Flashcard> flashcards;
 
     @Column(name = "password")
@@ -119,7 +125,6 @@ public class FlashcardSet {
         this.flashcards = flashcards;
     }
 
-    @JsonIgnore
     public String getPassword() {
         return password;
     }

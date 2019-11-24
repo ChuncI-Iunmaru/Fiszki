@@ -1,8 +1,11 @@
 package dyplomowa.fiszki.Fiszki.service.impl;
 
 import dyplomowa.fiszki.Fiszki.dao.FlashcardSetDAO;
+import dyplomowa.fiszki.Fiszki.dao.UserDAO;
 import dyplomowa.fiszki.Fiszki.model.entity.FlashcardSet;
+import dyplomowa.fiszki.Fiszki.model.entity.User;
 import dyplomowa.fiszki.Fiszki.service.FlashcardSetService;
+import dyplomowa.fiszki.Fiszki.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +20,9 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Autowired
     private FlashcardSetDAO flashcardSetDAO;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private BCryptPasswordEncoder bcryptEncoder;
@@ -57,5 +63,12 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     @Override
     public void delete(long id) {
         flashcardSetDAO.deleteById(id);
+    }
+
+    //TODO może to jakoś zabezpieczyć przed niestniejącym użytkownikem? Czy jest sens?
+    @Override
+    public List<FlashcardSet> findAllByCreatorUsername(String username) {
+        User user = userService.findOne(username);
+        return flashcardSetDAO.findAllByCreator(user);
     }
 }

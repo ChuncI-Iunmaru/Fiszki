@@ -1,11 +1,16 @@
 package dyplomowa.fiszki.Fiszki.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "flashcard")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Flashcard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,6 +18,7 @@ public class Flashcard {
 
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = false)
+    @JsonIdentityReference
     private User user;
 
     @Column(name = "front_text")
@@ -28,6 +34,7 @@ public class Flashcard {
     private Set<String> tags = new HashSet<>();
 
     @ManyToMany(mappedBy = "flashcards")
+    @JsonIdentityReference
     private Set<FlashcardSet> flashcardSets;
 
     public Flashcard() {
