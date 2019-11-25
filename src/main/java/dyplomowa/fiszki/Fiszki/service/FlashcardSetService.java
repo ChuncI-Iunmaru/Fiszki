@@ -12,4 +12,6 @@ public interface FlashcardSetService {
     FlashcardSet findById(long id);
     void delete(long id);
     List<FlashcardSet> findAllByCreatorUsername(String username);
+    List<FlashcardSet> findAllByTitleForUsername(String title, String username);
+    List<FlashcardSet> findAllByTitle(String title);
 }

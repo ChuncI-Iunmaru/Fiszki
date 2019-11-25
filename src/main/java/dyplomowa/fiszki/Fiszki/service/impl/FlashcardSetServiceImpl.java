@@ -71,4 +71,15 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         User user = userService.findOne(username);
         return flashcardSetDAO.findAllByCreator(user);
     }
+
+    @Override
+    public List<FlashcardSet> findAllByTitleForUsername(String title, String username) {
+        User user = userService.findOne(username);
+        return  flashcardSetDAO.findDistinctByTitleContainsAndCreator(title, user);
+    }
+
+    @Override
+    public List<FlashcardSet> findAllByTitle(String title) {
+        return flashcardSetDAO.findDistinctByTitleContains(title);
+    }
 }

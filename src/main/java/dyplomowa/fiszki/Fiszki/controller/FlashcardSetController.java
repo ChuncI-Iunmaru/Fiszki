@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -48,4 +49,27 @@ public class FlashcardSetController {
         return new ApiResponse<>(HttpStatus.OK.value(), "FlashcardSet deleted successfully", null);
     }
 
+    @GetMapping("/my_sets/{title}")
+    public ApiResponse<List<FlashcardSet>> getAllByTitleForToken(@PathVariable String title){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return new ApiResponse<>(HttpStatus.OK.value(),
+                "FlashcardSets for user " + username + " and title " + title,
+                flashcardSetService.findAllByTitleForUsername(title, username));
+    }
+
+    @GetMapping("/all_sets/{title}")
+    public ApiResponse<List<FlashcardSet>> getAllByTitle(@PathVariable String title){
+        return new ApiResponse<>(HttpStatus.OK.value(),
+                "FlashcardSets for title " + title,
+                flashcardSetService.findAllByTitle(title));
+    }
+
+    @GetMapping("/flashcards/{id}")
+    public ApiResponse<List<Flashcard>> getAllFlashcardsFromSet(@PathVariable long id){
+        FlashcardSet flashcardSet = flashcardSetService.findById(id);
+        if (flashcardSet == null) {
+            return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "No set with id: " + id, Collections.emptyList());
+        } else return new ApiResponse<>(HttpStatus.OK.value(), "Flashcards for set with id: " + id, flashcardSet.getFlashcards());
+    }
 }
