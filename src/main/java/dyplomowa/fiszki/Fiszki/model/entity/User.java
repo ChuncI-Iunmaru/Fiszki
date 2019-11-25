@@ -25,9 +25,9 @@ public class User {
     @Column
     private String role;
 
-    @OneToMany(mappedBy = "user")
-    @JsonIdentityReference
-    private Set<Flashcard> flashcards;
+//    @OneToMany(mappedBy = "user")
+//    @JsonIdentityReference
+//    private Set<Flashcard> flashcards;
 
     public long getId() {
         return id;
@@ -70,11 +70,11 @@ public class User {
         this.role = role;
     }
 
-    public Set<Flashcard> getFlashcards() {
-        return flashcards;
-    }
-
-    public void setFlashcards(Set<Flashcard> flashcards) {
-        this.flashcards = flashcards;
-    }
+//    public Set<Flashcard> getFlashcards() {
+//        return flashcards;
+//    }
+//
+//    public void setFlashcards(Set<Flashcard> flashcards) {
+//        this.flashcards = flashcards;
+//    }
 }

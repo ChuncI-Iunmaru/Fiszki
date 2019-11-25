@@ -58,7 +58,7 @@ public class FlashcardController {
 
     @PutMapping("/{id}")
     public ApiResponse<FlashcardDTO> update(@RequestBody FlashcardDTO flashcardDTO){
-        return new ApiResponse<>(HttpStatus.OK.value(), "Flashcard fetched successfully", flashcardService.update(flashcardDTO));
+        return new ApiResponse<>(HttpStatus.OK.value(), "Flashcard updated successfully", flashcardService.update(flashcardDTO));
     }
 
     @DeleteMapping("/{id}")
