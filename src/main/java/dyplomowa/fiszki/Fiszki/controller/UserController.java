@@ -6,7 +6,10 @@ import dyplomowa.fiszki.Fiszki.model.dto.UserDto;
 import dyplomowa.fiszki.Fiszki.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -23,9 +26,19 @@ public class UserController {
         return new ApiResponse<>(HttpStatus.OK.value(), "User saved successfully.",userService.save(user));
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ApiResponse<List<User>> listUser(){
         return new ApiResponse<>(HttpStatus.OK.value(), "User list fetched successfully.",userService.findAll());
+    }
+
+    @GetMapping
+    public ApiResponse<User> getFromToken(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userService.findOne(username);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No user with that username", null);
+        } else return new ApiResponse<>(HttpStatus.OK.value(), "User fetched successfully.", user);
     }
 
     @GetMapping("/{id}")

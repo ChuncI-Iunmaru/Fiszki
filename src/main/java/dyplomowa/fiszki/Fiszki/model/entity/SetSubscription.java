@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "set_subscription")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = SetSubscription.class)
 public class SetSubscription {
 
     @Id

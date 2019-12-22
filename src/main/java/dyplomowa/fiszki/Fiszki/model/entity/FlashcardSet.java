@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "flashcard_set")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = FlashcardSet.class)
 public class FlashcardSet {
 
     @Id

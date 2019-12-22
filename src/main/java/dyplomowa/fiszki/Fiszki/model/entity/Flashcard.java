@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "flashcard")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Flashcard.class)
 public class Flashcard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
