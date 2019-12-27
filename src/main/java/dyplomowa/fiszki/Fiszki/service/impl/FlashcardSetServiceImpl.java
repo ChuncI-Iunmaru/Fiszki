@@ -30,8 +30,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     @Override
     public FlashcardSet save(FlashcardSet set) {
         FlashcardSet newSet = new FlashcardSet();
-        BeanUtils.copyProperties(set, newSet, "password");
-        newSet.setPassword(bcryptEncoder.encode(set.getPassword()));
+        BeanUtils.copyProperties(set, newSet);
         flashcardSetDAO.save(newSet);
 
         return newSet;
@@ -41,7 +40,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public FlashcardSet update(FlashcardSet newSet) {
         FlashcardSet set = findById(newSet.getId());
         if (set != null) {
-            BeanUtils.copyProperties(newSet, set, "password");
+            BeanUtils.copyProperties(newSet, set);
             flashcardSetDAO.save(set);
         }
         return newSet;

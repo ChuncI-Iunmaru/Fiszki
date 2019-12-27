@@ -65,6 +65,13 @@ public class FlashcardSetController {
                 flashcardSetService.findAllByTitle(title));
     }
 
+    @GetMapping("/all_sets")
+    public ApiResponse<List<FlashcardSet>> getAll(){
+        return new ApiResponse<>(HttpStatus.OK.value(),
+                "FlashcardSets ",
+                flashcardSetService.findAll());
+    }
+
     @GetMapping("/flashcards/{id}")
     public ApiResponse<List<Flashcard>> getAllFlashcardsFromSet(@PathVariable long id){
         FlashcardSet flashcardSet = flashcardSetService.findById(id);

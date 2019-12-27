@@ -3,7 +3,7 @@ package dyplomowa.fiszki.Fiszki.model.entity;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import dyplomowa.fiszki.Fiszki.utils.IntegerListConverter;
+import dyplomowa.fiszki.Fiszki.utils.LongListConverter;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -29,8 +29,12 @@ public class SetSubscription {
     private FlashcardSet flashcardSet;
 
     @Column(name = "learned_flashcard_list")
-    @Convert(converter = IntegerListConverter.class)
-    private List<Integer> learnedFlashcards;
+    @Convert(converter = LongListConverter.class)
+    private List<Long> learnedFlashcards;
+
+    @Column(name = "second_box")
+    @Convert(converter = LongListConverter.class)
+    private List<Long> secondBox;
 
     @OneToMany
     @JoinColumn(name = "id_set_subscription")
@@ -68,11 +72,11 @@ public class SetSubscription {
         this.flashcardSet = flashcardSet;
     }
 
-    public List<Integer> getLearnedFlashcards() {
+    public List<Long> getLearnedFlashcards() {
         return learnedFlashcards;
     }
 
-    public void setLearnedFlashcards(List<Integer> learnedFlashcards) {
+    public void setLearnedFlashcards(List<Long> learnedFlashcards) {
         this.learnedFlashcards = learnedFlashcards;
     }
 
@@ -90,5 +94,13 @@ public class SetSubscription {
 
     public void setSubscriptionDate(Date subscriptionDate) {
         this.subscriptionDate = subscriptionDate;
+    }
+
+    public List<Long> getSecondBox() {
+        return secondBox;
+    }
+
+    public void setSecondBox(List<Long> secondBox) {
+        this.secondBox = secondBox;
     }
 }

@@ -2,6 +2,7 @@ package dyplomowa.fiszki.Fiszki.service.impl;
 
 import dyplomowa.fiszki.Fiszki.dao.SetSubscriptionDAO;
 import dyplomowa.fiszki.Fiszki.model.entity.SetSubscription;
+import dyplomowa.fiszki.Fiszki.model.entity.User;
 import dyplomowa.fiszki.Fiszki.service.SetSubscriptionService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,13 @@ public class SetSubscriptionServiceImpl implements SetSubscriptionService {
     public List<SetSubscription> findAll() {
         List<SetSubscription> subscriptions = new ArrayList<>();
         subscriptionDAO.findAll().iterator().forEachRemaining(subscriptions::add);
+        return subscriptions;
+    }
+
+    @Override
+    public List<SetSubscription> findByUser(User user){
+        List<SetSubscription> subscriptions = new ArrayList<>();
+        subscriptionDAO.findAllByUser(user).iterator().forEachRemaining(subscriptions::add);
         return subscriptions;
     }
 

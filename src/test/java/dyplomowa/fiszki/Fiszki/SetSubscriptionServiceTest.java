@@ -45,7 +45,7 @@ public class SetSubscriptionServiceTest {
 
         subscription.setUser(user);
         subscription.setFlashcardSet(flashcardSet);
-        subscription.setLearnedFlashcards(new ArrayList<>(Arrays.asList(0)));
+        subscription.setLearnedFlashcards(new ArrayList<>(Arrays.asList(0L)));
         subscription.setScores(new ArrayList<>(Collections.emptyList()));
         subscription.setSubscriptionDate(new Date());
 
@@ -68,7 +68,7 @@ public class SetSubscriptionServiceTest {
     public void testUpdate(){
         SetSubscription subscription = subscriptionService.findById(1L);
         assertThat(subscription, notNullValue());
-        subscription.setLearnedFlashcards(new ArrayList<>(Arrays.asList(1,2,3,4,5)));
+        subscription.setLearnedFlashcards(new ArrayList<>(Arrays.asList(1L,2L,3L,4L,5L)));
         subscriptionService.update(subscription);
 
         SetSubscription result = subscriptionService.findById(1L);
