@@ -18,7 +18,7 @@ public class TestScore {
     //Na razie bez dwukierunkowego związku, bo nwm czy będzie potrzebny
 
     @ManyToOne
-    @JoinColumn(name = "id_set_subscription")
+    @JoinColumn(name = "id_set_subscription", nullable = false)
     @JsonIdentityReference
     private SetSubscription subscription;
 

@@ -36,8 +36,7 @@ public class SetSubscription {
     @Convert(converter = LongListConverter.class)
     private List<Long> secondBox;
 
-    @OneToMany
-    @JoinColumn(name = "id_set_subscription")
+    @OneToMany(mappedBy = "subscription")
     @JsonIdentityReference
     private List<TestScore> scores;
 
