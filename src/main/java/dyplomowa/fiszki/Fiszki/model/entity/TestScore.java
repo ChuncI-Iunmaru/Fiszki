@@ -1,8 +1,8 @@
 package dyplomowa.fiszki.Fiszki.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.aspectj.weaver.ast.Test;
 
 import javax.persistence.*;
 
@@ -12,10 +12,15 @@ import javax.persistence.*;
 public class TestScore {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     //Na razie bez dwukierunkowego związku, bo nwm czy będzie potrzebny
+
+    @ManyToOne
+    @JoinColumn(name = "id_set_subscription")
+    @JsonIdentityReference
+    private SetSubscription subscription;
 
     @Column(name = "score")
     private int score;
@@ -37,5 +42,13 @@ public class TestScore {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public SetSubscription getSubscription() {
+        return subscription;
+    }
+
+    public void setSubscription(SetSubscription subscription) {
+        this.subscription = subscription;
     }
 }

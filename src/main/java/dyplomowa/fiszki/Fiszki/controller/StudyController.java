@@ -4,11 +4,15 @@ import dyplomowa.fiszki.Fiszki.model.ApiResponse;
 import dyplomowa.fiszki.Fiszki.model.entity.Flashcard;
 import dyplomowa.fiszki.Fiszki.model.entity.FlashcardSet;
 import dyplomowa.fiszki.Fiszki.model.entity.SetSubscription;
+import dyplomowa.fiszki.Fiszki.model.entity.TestScore;
+import dyplomowa.fiszki.Fiszki.model.study.FinalTest;
 import dyplomowa.fiszki.Fiszki.model.study.StudySession;
 import dyplomowa.fiszki.Fiszki.model.study.TestQuestion;
 import dyplomowa.fiszki.Fiszki.model.study.TestResults;
 import dyplomowa.fiszki.Fiszki.service.FlashcardSetService;
 import dyplomowa.fiszki.Fiszki.service.SetSubscriptionService;
+import dyplomowa.fiszki.Fiszki.service.TestScoreService;
+import org.aspectj.weaver.ast.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +31,9 @@ public class StudyController {
 
     @Autowired
     private FlashcardSetService setService;
+
+    @Autowired
+    private TestScoreService scoreService;
 
     // TODO Mało optymalne rozwiązanie
     private List<String> getAnswerList(List<String> allAnswers, String correct){
@@ -106,7 +113,7 @@ public class StudyController {
         return new ApiResponse<>(HttpStatus.OK.value(), "Study session for id: " + id, session);
     }
 
-    @GetMapping("/{sub_id}/check_session")
+    @PostMapping("/{sub_id}/check_session")
     public ApiResponse<TestResults> checkStudySession(@PathVariable long sub_id, @RequestBody StudySession session) {
         // Get subscription
         SetSubscription subscription = subscriptionService.findById(sub_id);
@@ -150,9 +157,11 @@ public class StudyController {
         }
 
         // Update subscription
-        subscription.setSecondBox(secondBox);
-        subscription.setLearnedFlashcards(thirdBox);
-        subscriptionService.update(subscription);
+         subscription.setSecondBox(secondBox);
+         subscription.setLearnedFlashcards(thirdBox);
+         subscription.setSubscriptionDate(new Date());
+         subscriptionService.update(subscription);
+
 
         List<TestQuestion> allQuestions = Stream.concat(Stream.concat(firstBoxQuestions.stream(), secondBoxQuestions.stream()), thirdBoxQuestions.stream()).collect(Collectors.toList());
         long correctAnswers = allQuestions.stream().filter(TestQuestion::isCorrect).count();
@@ -165,4 +174,68 @@ public class StudyController {
 
         return new ApiResponse<>(HttpStatus.OK.value(), "Session test results: " + correctAnswers + ", " + allQuestions.size() + ", " + (int) Math.floor(((double)correctAnswers/allQuestions.size())*100), testResults);
     }
+
+    @GetMapping("/test_for_sub/{id}")
+    public ApiResponse<FinalTest> getTestForSubscription(@PathVariable long id){
+        SetSubscription subscription = subscriptionService.findById(id);
+        if (subscription == null) return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "No subscription with id: " + id, null);
+        // Assign set from it to variable
+        FlashcardSet set = setService.findById(subscription.getFlashcardSet().getId());
+        if (set == null) return new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error retrieving set", null);
+        //Get all flashcards
+        List<Flashcard> allFlashcards = new ArrayList<>(set.getFlashcards());
+        List<String> answers = allFlashcards.stream().map(Flashcard::getBackText).collect(Collectors.toList());
+        //Pick random testNum from them
+        Collections.shuffle(allFlashcards);
+        List<Flashcard> forTest = allFlashcards.subList(0, set.getTestQuestionsNum());
+        //Create result question List
+        List<TestQuestion> questions = new ArrayList<>();
+        //Create and add questions to them
+        for (Flashcard f:forTest) {
+            questions.add(createQuestion(answers, f));
+        }
+        //Create and set Final test object
+        FinalTest result = new FinalTest();
+        result.setTime(set.getTestTime());
+        result.setQuestions(questions);
+        //Return final set
+        return new ApiResponse<>(HttpStatus.OK.value(), "Test for subscription id: " + id, result);
+    }
+
+    @PostMapping("/{id}/check_test")
+    public ApiResponse<TestResults> getTestResults(@PathVariable long id, @RequestBody FinalTest test) {
+        // Get subscription
+        SetSubscription subscription = subscriptionService.findById(id);
+        if (subscription == null) return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "No subscription with id: " + id, null);
+
+        //Get question list
+        List<TestQuestion> questions = new ArrayList<>(test.getQuestions());
+        //Check all answers
+        for (TestQuestion q : questions) {
+            if (q.getGivenAnswer().compareTo(q.getCorrectAnswer()) == 0) {
+                q.setCorrect(true);
+            }
+        }
+
+        long correctAnswers = questions.stream().filter(TestQuestion::isCorrect).count();
+
+        TestResults testResults = new TestResults();
+        testResults.setQuestions(questions);
+
+        int testScore = (int) Math.floor(((double)correctAnswers/questions.size())*100);
+        testResults.setScore(testScore);
+
+        // Update subscription
+        List<TestScore> scores = new ArrayList<>(subscription.getScores());
+        TestScore newScore = new TestScore();
+        newScore.setScore(testScore);
+        newScore.setSubscription(subscription);
+        TestScore saved = scoreService.save(newScore);
+        scores.add(saved);
+        subscription.setScores(scores);
+        subscriptionService.update(subscription);
+
+        return new ApiResponse<>(HttpStatus.OK.value(), "Session test results: " + correctAnswers + ", " + questions.size() + ", " + (int) Math.floor(((double)correctAnswers/questions.size())*100), testResults);
+
+    };
 }
