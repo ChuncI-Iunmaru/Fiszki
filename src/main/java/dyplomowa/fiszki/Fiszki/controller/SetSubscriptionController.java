@@ -1,9 +1,11 @@
 package dyplomowa.fiszki.Fiszki.controller;
 
 import dyplomowa.fiszki.Fiszki.model.ApiResponse;
+import dyplomowa.fiszki.Fiszki.model.entity.FlashcardSet;
 import dyplomowa.fiszki.Fiszki.model.entity.SetSubscription;
 import dyplomowa.fiszki.Fiszki.model.entity.TestScore;
 import dyplomowa.fiszki.Fiszki.model.entity.User;
+import dyplomowa.fiszki.Fiszki.service.FlashcardSetService;
 import dyplomowa.fiszki.Fiszki.service.SetSubscriptionService;
 import dyplomowa.fiszki.Fiszki.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.Date;
@@ -27,6 +30,9 @@ public class SetSubscriptionController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    FlashcardSetService setService;
+
     @GetMapping("/user")
     public ApiResponse<List<SetSubscription>> getForUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -34,6 +40,13 @@ public class SetSubscriptionController {
         User user = userService.findOne(username);
         if (user == null) return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "No user found with username " + username + ", possible authorization error.", Collections.emptyList());
         else return new ApiResponse<>(HttpStatus.OK.value(), "Subscriptions for username = " + username, subscriptionService.findByUser(user));
+    }
+
+    @GetMapping("/set/{id}")
+    public ApiResponse<List<SetSubscription>> getForSet(@PathVariable long id){
+        FlashcardSet set = setService.findById(id);
+        if (set == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No set wit id: " + id, null);
+        return new ApiResponse<>(HttpStatus.OK.value(), "Subscriptions for set with id: " + id, subscriptionService.findBySet(set));
     }
 
     @GetMapping

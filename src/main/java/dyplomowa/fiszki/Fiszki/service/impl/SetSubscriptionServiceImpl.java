@@ -1,6 +1,7 @@
 package dyplomowa.fiszki.Fiszki.service.impl;
 
 import dyplomowa.fiszki.Fiszki.dao.SetSubscriptionDAO;
+import dyplomowa.fiszki.Fiszki.model.entity.FlashcardSet;
 import dyplomowa.fiszki.Fiszki.model.entity.SetSubscription;
 import dyplomowa.fiszki.Fiszki.model.entity.User;
 import dyplomowa.fiszki.Fiszki.service.SetSubscriptionService;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,5 +58,23 @@ public class SetSubscriptionServiceImpl implements SetSubscriptionService {
     public SetSubscription findById(long id) {
         Optional<SetSubscription> subscription = subscriptionDAO.findById(id);
         return subscription.orElse(null);
+    }
+
+    @Override
+    public List<SetSubscription> findBySet(FlashcardSet set) {
+        List<SetSubscription> subscriptions = new ArrayList<>();
+        subscriptionDAO.findAllByFlashcardSet(set).iterator().forEachRemaining(subscriptions::add);
+        return subscriptions;
+    }
+
+    @Override
+    public void resetProgress(long id) {
+        SetSubscription subscription = findById(id);
+        if (subscription != null) {
+            subscription.setScores(Collections.emptyList());
+            subscription.setLearnedFlashcards(Collections.emptyList());
+            subscription.setSecondBox(Collections.emptyList());
+            subscriptionDAO.save(subscription);
+        }
     }
 }

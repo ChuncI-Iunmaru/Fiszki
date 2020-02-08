@@ -230,6 +230,7 @@ public class StudyController {
         TestScore newScore = new TestScore();
         newScore.setScore(testScore);
         newScore.setSubscription(subscription);
+        newScore.setTestDate(new Date());
         TestScore saved = scoreService.save(newScore);
         scores.add(saved);
         subscription.setScores(scores);

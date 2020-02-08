@@ -1,5 +1,6 @@
 package dyplomowa.fiszki.Fiszki.dao;
 
+import dyplomowa.fiszki.Fiszki.model.entity.FlashcardSet;
 import dyplomowa.fiszki.Fiszki.model.entity.SetSubscription;
 import dyplomowa.fiszki.Fiszki.model.entity.User;
 import org.springframework.data.repository.CrudRepository;
@@ -10,4 +11,5 @@ import java.util.List;
 @Repository
 public interface SetSubscriptionDAO extends CrudRepository<SetSubscription, Long> {
     List<SetSubscription> findAllByUser(User user);
+    List<SetSubscription> findAllByFlashcardSet(FlashcardSet set);
 }

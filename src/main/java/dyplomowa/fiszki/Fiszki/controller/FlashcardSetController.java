@@ -3,7 +3,9 @@ package dyplomowa.fiszki.Fiszki.controller;
 import dyplomowa.fiszki.Fiszki.model.ApiResponse;
 import dyplomowa.fiszki.Fiszki.model.entity.Flashcard;
 import dyplomowa.fiszki.Fiszki.model.entity.FlashcardSet;
+import dyplomowa.fiszki.Fiszki.model.entity.SetSubscription;
 import dyplomowa.fiszki.Fiszki.service.FlashcardSetService;
+import dyplomowa.fiszki.Fiszki.service.SetSubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -20,6 +22,9 @@ public class FlashcardSetController {
 
     @Autowired
     FlashcardSetService flashcardSetService;
+
+    @Autowired
+    SetSubscriptionService subscriptionService;
 
     @PostMapping
     public ApiResponse<FlashcardSet> saveFlashcardSet(@RequestBody FlashcardSet flashcardSet){
@@ -40,7 +45,12 @@ public class FlashcardSetController {
 
     @PutMapping("/{id}")
     public ApiResponse<FlashcardSet> update(@RequestBody FlashcardSet flashcardSet){
-        return new ApiResponse<>(HttpStatus.OK.value(), "FlashcardSet updated successfully", flashcardSetService.update(flashcardSet));
+        FlashcardSet result = flashcardSetService.update(flashcardSet);
+        List<SetSubscription> subscriptions= subscriptionService.findBySet(result);
+        for (SetSubscription s : subscriptions) {
+            subscriptionService.resetProgress(s.getId());
+        }
+        return new ApiResponse<>(HttpStatus.OK.value(), "FlashcardSet updated successfully", result);
     }
 
     @DeleteMapping("/{id}")

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "test_score")
@@ -24,6 +25,10 @@ public class TestScore {
 
     @Column(name = "score")
     private int score;
+
+    @Column(name = "test_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date testDate;
 
     public TestScore() {
     }
@@ -50,5 +55,13 @@ public class TestScore {
 
     public void setSubscription(SetSubscription subscription) {
         this.subscription = subscription;
+    }
+
+    public Date getTestDate() {
+        return testDate;
+    }
+
+    public void setTestDate(Date testDate) {
+        this.testDate = testDate;
     }
 }

@@ -1,5 +1,6 @@
 package dyplomowa.fiszki.Fiszki.service;
 
+import dyplomowa.fiszki.Fiszki.model.entity.FlashcardSet;
 import dyplomowa.fiszki.Fiszki.model.entity.SetSubscription;
 import dyplomowa.fiszki.Fiszki.model.entity.User;
 
@@ -14,4 +15,6 @@ public interface SetSubscriptionService {
     //TODO findById i inne jak potrzeba
     SetSubscription findById(long id);
     List<SetSubscription> findByUser(User user);
+    List<SetSubscription> findBySet(FlashcardSet set);
+    void resetProgress(long id);
 }

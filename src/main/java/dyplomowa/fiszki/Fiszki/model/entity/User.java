@@ -29,6 +29,13 @@ public class User {
 //    @JsonIdentityReference
 //    private Set<Flashcard> flashcards;
 
+    public User() {
+    }
+
+    public User(Long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }
